@@ -2,7 +2,6 @@ package chapter06;
 
 import java.util.StringTokenizer;
 
-//클래스 생성
 class Person {
 	String name;
 	String gender;
@@ -39,7 +38,7 @@ public class StringTokenizerEx {
 		}
 		
 		//남자 몸무게 평균 
-		//남자 몸무게 합계 구하기
+		//남자 몸무게 합계, 인원수 구하기
 		int sum = 0;
 		int manNum = 0;
 		for(int j=0; j<p.length; j++) {
@@ -50,7 +49,6 @@ public class StringTokenizerEx {
 		}
 		System.out.println(sum);
 		System.out.println(manNum);
-		//남자 인원수 구하기
 		System.out.println("남자들의 몸무게 평균은 " + (double)sum / manNum);
 	}
 }
