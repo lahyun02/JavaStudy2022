@@ -53,6 +53,8 @@ public class CSV_Parsing {
 		
 		// Person 객체를 담을 컬렉션 ArrayList 선언 및 생성
 		ArrayList<Person> list = new ArrayList<>(); // try문 밖에서도 쓰려면 try문 안에 있으면 안됨.
+		// Person 객체 선언 
+		Person p;
 		
 		int sum = 0;		// 남자 몸무게 합계
 		int manNum = 0;		// 남자 인원수
@@ -70,7 +72,7 @@ public class CSV_Parsing {
 			while((msg=reader.readLine()) != null) {		// 문자열 라인이 null이 아닐 동안(있는 동안)
 //				System.out.println(msg); 
 				StringTokenizer st = new StringTokenizer(msg, ",");		// msg를 ,로 분리
-				Person p = new Person();								// Person 객체 선언 및 생성
+				p = new Person();								// Person 객체 선언 및 생성
 				p.setName(st.nextToken().trim());
 				p.setGender(st.nextToken().trim());
 				p.setWeight(Integer.parseInt(st.nextToken().trim())); 
