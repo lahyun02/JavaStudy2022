@@ -92,7 +92,7 @@ public class HangManEx {
 		Scanner scan = null;
 		Vector<String> wordVector = new Vector<String>();
 		try {
-			scan =  new Scanner(new FileReader("/Users/lahyun/lani/study/coding/java-study/words.txt"));
+			scan =  new Scanner(new FileReader("d:\\words.txt"));
 			while(scan.hasNext()) {
 				String word = scan.nextLine();
 				wordVector.add(word); 
