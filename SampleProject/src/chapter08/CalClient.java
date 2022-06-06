@@ -16,11 +16,12 @@ public class CalClient {
 			reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			writer = new BufferedWriter(new OutputStreamWriter(s.getOutputStream())); 
 			while(true) {
-				System.out.print("수식을 입력해주세요(+,-,*중 하나 입력, 정수)>> ");
+				System.out.print("수식을 입력해주세요(+,-,*중 하나, 정수)>> ");
 				String outMessage = scan.nextLine();
 				if(outMessage.equalsIgnoreCase("bye")) {
 					writer.write(outMessage + "\n"); 
 					writer.flush();
+					System.out.println("클라이언트에서 bye로 연결 종료했음!");
 					break;
 				}
 				writer.write(outMessage + "\n");	//키보드에서 읽은 문자열 전송

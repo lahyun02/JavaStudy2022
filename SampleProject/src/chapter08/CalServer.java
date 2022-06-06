@@ -2,6 +2,7 @@ package chapter08;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -13,7 +14,6 @@ public class CalServer {
 		ServerSocket ss = null;
 		Socket s = null;
 		Scanner scan = new Scanner(System.in);
-//		int sum = 0;
 		
 		try {
 			ss = new ServerSocket(9000); // 서버 소켓 생성
@@ -31,33 +31,28 @@ public class CalServer {
 				System.out.println("클라이언트가 보낸 수식: " + inputMessage);
 				StringTokenizer st = new StringTokenizer(inputMessage, "+-*"); 
 				int total = 0;
-				int sub = 0;
-//				int temp = 0;
+				ArrayList<Integer> num = new ArrayList<Integer>();
+				int i = 0;
 				while(st.hasMoreTokens()) {
+									
+					num.add(Integer.parseInt(st.nextToken().trim()));
+					if(i==0) { total += num.get(0); }
 					
-					
-					
-					int num = Integer.parseInt(st.nextToken().trim()); 
-					int num2 = Integer.parseInt(st.nextToken().trim()); 
-					if(inputMessage.contains("+")) {
-						total = num + num2;
+					else if(inputMessage.contains("+")) {
+						total += num.get(i);
 					}
 					else if(inputMessage.contains("-")) {
-						total = num - num2;
+						total -= num.get(i);
 					}
 					else if(inputMessage.contains("*")) {
-						total = num * num2;
+						total = total * num.get(i);
 					}
-					
-					
+					i++;
 					
 				}
 				
 				
-				
-//				System.out.println(sum);
 				String outMessage = Integer.toString(total);	//수식을 계산한 값을 문자열로 바꿈
-//				String outMessage2 = Integer.toString(sub);
 //				System.out.println(outMessage); 
 				writer.write(outMessage + "\n"); 		// 문자열로 바꾼 계산값을 전송
 				writer.flush();							// writer의 스트림 버퍼에 있는 모든 문자열 전송
