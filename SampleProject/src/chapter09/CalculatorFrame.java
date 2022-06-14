@@ -3,6 +3,7 @@ package chapter09;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.swing.*;
 
@@ -38,9 +39,6 @@ class MyActionListener implements ActionListener {
 	}
 }
 
-
-
-
 class NorthPanel extends JPanel {
 	private static JTextField tf;
 	
@@ -57,25 +55,21 @@ class NorthPanel extends JPanel {
 		setOpaque(true); 
 		setLayout(new FlowLayout());	//JPanel은 FlowLayout이 디폴트임.
 		add(new JLabel("수식입력"));
-//		add(new JTextField(16));
 		
-//		JTextField tf = new JTextField(16);  // -> 오류. 널포인트익셉션 
 		setTf(new JTextField(16));
 		add(tf);
-		
 	}
 }
-
 
 
 class CenterPanel extends JPanel {
 	ArrayList<JButton> btnList = new ArrayList<JButton>();
 	StringBuilder sb = new StringBuilder();
-	int last;
-	String str;
+	int last;		//마지막인덱스
+	String str;		//수식입력 문자열 
 	
+	ArrayList<String> al = new ArrayList<String>();
 	
-	// 내부 클래스
 	class MyActionListener2 implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -83,79 +77,57 @@ class CenterPanel extends JPanel {
 			
 			//수식 입력 텍스트필드에 클릭한 버튼의 내용들이 누적으로 출력된다. 
 			btnList.add(button);
+			
 			for(int i=0; i < btnList.size(); i++) {
-//				NorthPanel.getTf().setText(btnList.get(i).getText());
-				last = btnList.lastIndexOf(button); 
+				last = btnList.lastIndexOf(button); 	//btnList에서 마지막 button 인덱스
 			}
-			sb.append(btnList.get(last).getText());
-			str = sb.toString();
+			sb.append(btnList.get(last).getText());		//btnList의 마지막 요소 텍스트를 추가하기
+			str = sb.toString();						//문자열로 변환
+			
 			System.out.println(str);
 			NorthPanel.getTf().setText(str);
-			
-			if(btnList.get(last).getText().equals("x")) {
-//				num.add();
-			}
 		}
 	}
-	
-	ArrayList<Integer> num = new ArrayList<Integer>();
+
 	// 내부 클래스 
-	class MyActionListener3 implements ActionListener {
+	class MyActionListener4 implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JButton button = (JButton) e.getSource();		// 이벤트 소스 버튼 알아내기 
-			// 숫자만 따로 ArryaList에 저장. 
-			int n = Integer.parseInt(button.getText());
-			num.add(n);
-//			for(int na : num) System.out.println(na);
-		}
-	}
-	
-	int total = 0;
-	int i=0;
-	// 내부 클래스 
-		class MyActionListener4 implements ActionListener {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// x이면 바로 앞에 있는 것과 뒤에 있는 것 곱하기 
-				JButton button = (JButton) e.getSource();
-				
-//				String operator = button.getText().toString();
-//				boolean contains = str.contains("x");
-				
-//				String[] split = str.split("x");
-				
-				
-				if(str.contains("x")) { 
-//					int nn = num.get(0) * num.get(1);
-					if(i==0) { total += num.get(0); System.out.println("total : " + total); i++; }
-					 total = total * num.get(1); 
-					 
-					 
-//					String[] split = str.split(operator);
-//					int nn = Integer.parseInt(split[0]) + Integer.parseInt(split[1]);
-//					System.out.println(nn);
-					System.out.println("num.get(0) :" + num.get(0));
-					System.out.println("num.get(1) :" + num.get(1));
-					System.out.println("total2 :" + total);
-				}
-				
-				String ss = String.valueOf(total);
-				SouthPanel.getStf().setText(ss);
-				
+			JButton button = (JButton) e.getSource();
+			// 계산한 값을 문자열로 변환해서 계산결과 필드에 출력하기 
+			SouthPanel.getStf().setText(Integer.toString(calc(str)));
 			}
+		}
+	
+	// 입력한 버튼으로 계산하는 메소드
+	public int calc(String str) {
+		int total =0 ;		// 총합계
+		StringTokenizer st = new StringTokenizer(str, "+-x/"); 
+		int num1 =0;
+		int num2 = 0;
+		while(st.hasMoreTokens()) {
+			num1 = Integer.parseInt(st.nextToken().trim());
+			num2 = Integer.parseInt(st.nextToken().trim());
+		}
+		if(str.contains("+")) {
+			total = num1 + num2;
+		}
+		else if(str.contains("-")) {
 			
+			total = num1 - num2;
+		}
+		else if(str.contains("x")) {
+			
+			total = num1 * num2;
+		}
+		else if(str.contains("/")) {
+			if(!(num2 == 0)) total = num1 / num2;
+			else { total = 1234; }
 			
 		}
-		
-//	// 내부 클래스 
-//	class MyActionListener5 implements ActionListener {
-//		@Override
-//		public void actionPerformed(ActionEvent e) {
-//			
-//		}
-//		
-//	}
+		System.out.println(total);
+		return total;
+	} 
 	
 	
 	public CenterPanel() {
@@ -163,62 +135,46 @@ class CenterPanel extends JPanel {
 		setOpaque(true);
 		setLayout(new GridLayout(4,4,5,5));
 		
-//		JButton b = null;
-//		ArrayList<JButton> al = new ArrayList<JButton>();
 		for(int i=0; i<10; i++) {	
-//			add(new JButton(Integer.toString(i)));
 			JButton b = new JButton(Integer.toString(i));
 			add(b);
 			b.addActionListener(new MyActionListener2());
-			b.addActionListener(new MyActionListener3());
-//			al.get(i).addActionListener(new MyActionListener2()); // -> al의 0번째에 추가하기도 전에 0번째것을 호출했으니까 인덱스 바운즈 에러가 남. 
-//			al.add(b);
-//			al.get(i).addActionListener(new MyActionListener2());
-			
 		}
 		
 		
+		class MyActionListener5 implements ActionListener {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButton button = (JButton) e.getSource();
+				str = "";
+				SouthPanel.getStf().setText(str);
+				NorthPanel.getTf().setText(str);
+				
+				btnList.clear();
+				sb.setLength(0);
+			}
+		}
 		
 		JButton delete_button = new JButton("CE");
+		delete_button.addActionListener(new MyActionListener5());
 		add(delete_button);
 		
-//		add(new JButton("계산"));
 		JButton calc = new JButton("계산");
 		add(calc);
 		calc.addActionListener(new MyActionListener4());
 		
-		
-		
 		delete_button.addActionListener(new MyActionListener()); //독립적인 클래스로 이벤트 리스너 작성.
-		//-> 한번쓰고 말꺼라서 굳이 이름 안지어주고 익명으로 그냥 썼음.
 
-//		JButton buttons[] = {new JButton("+"), new JButton("-"), new JButton("x"), new JButton("/")};
-		JButton plus = new JButton("+");
-		JButton minus = new JButton("-");
-		JButton multiple = new JButton("x");
-		JButton divide = new JButton("/");
-		
-		JButton buttons[] = {plus, minus, multiple, divide};
+		JButton buttons[] = {new JButton("+"), new JButton("-"), new JButton("x"), new JButton("/")};
 		
 		for(int i=0; i<buttons.length; i++) {
 			buttons[i].setBackground(Color.CYAN);
 			add(buttons[i]);
 			
 			buttons[i].addActionListener(new MyActionListener2());
-//			buttons[i].addActionListener(new MyActionListener4());
-//			al.add(buttons[i]);
 		}
-			
 	}
-	
-	
-	
-	
-	
-	
 }
-
-
 
 class SouthPanel extends JPanel {
 	private static JTextField stf;
@@ -236,14 +192,10 @@ class SouthPanel extends JPanel {
 		setOpaque(true); 
 		setLayout(new FlowLayout());
 		add(new JLabel("계산결과"));
-//		add(new JTextField(16));
 		
-//		stf = new JTextField(16);
 		setStf(new JTextField(16));
 		add(stf);
-		
 	}
-	
 
 }
 
