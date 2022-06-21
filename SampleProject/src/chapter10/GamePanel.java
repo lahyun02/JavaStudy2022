@@ -21,7 +21,7 @@ public class GamePanel extends JFrame {
 		setTitle("Open Challenge 10"); //프레임 타이틀
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //프레임 종료버튼이 클릭되면 응용프로그램을 종료
 		add(new GamePanelNew());  // GamePanelNew 생성자로 생성, 추가
-		setSize(500,500);  //프레임 크기 500x500
+		setSize(500,350);  //프레임 크기 500x500
 		setVisible(true);  //프레임 출력
 	}
 	
@@ -48,7 +48,7 @@ public class GamePanel extends JFrame {
 			}
 			
 			result.setSize(100, 100);		//result의 사이즈 설정
-			result.setLocation(200, 350);   //result의 위치 설정
+			result.setLocation(200, 200);   //result의 위치 설정
 			this.add(result); 				//result 추가
 			
 			
