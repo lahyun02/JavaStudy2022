@@ -22,12 +22,13 @@ import javax.swing.JTextField;
 public class Prac11_04 extends JFrame {
 	JTextField money [] = new JTextField[8];
 	String text[] = {"50000원", "10000원", "1000원", "500원", "100원", "50원", "10원", "1원"};
-//	int money_unit[] = {50000, 10000, 1000, 500, 100, 50, 10, 1};
-	int money_unit[] = new int[8];
+	int money_unit[] = {50000, 10000, 1000, 500, 100, 50, 10, 1};
+	int mu[] = new int[8];
 //	List<Integer> money_unit = new ArrayList<Integer>();
 	JTextField totalMoney = new JTextField(20);
 	JPanel j;
 	JCheckBox[] cb = new JCheckBox[8];
+	boolean flag;
 	public Prac11_04() {
 		super("Money Changer 예제");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -81,58 +82,18 @@ public class Prac11_04 extends JFrame {
 	class MyItemListener implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
 			if(e.getStateChange() == ItemEvent.SELECTED) {
-				if(e.getItem() == cb[0]) {
-					money_unit[0] = 50000;
+				for(int i=0; i<money_unit.length; i++) {
+					if(e.getItem() == cb[i])
+					mu[i] = money_unit[i];
 				}
-				else if(e.getItem() == cb[1]) {
-					money_unit[1] = 10000;
-				}
-				else if(e.getItem() == cb[2]) {
-					money_unit[2] = 1000;
-				}
-				else if(e.getItem() == cb[3]) {
-					money_unit[3] = 5000;
-				}
-				else if(e.getItem() == cb[4]) {
-					money_unit[4] = 500;
-				}
-				else if(e.getItem() == cb[5]) {
-					money_unit[5] = 100;
-				}
-				else if(e.getItem() == cb[6]) {
-					money_unit[6] = 10;
-				}
-				else {
-					money_unit[7] = 1;
-				}
-				
+								
 			}
 			else {
-//				if(e.getItem() == cb[0]) {
-//					
-//					money_unit.remove(50000);
-//				}
-//				else if(e.getItem() == cb[1]) {
-//					money_unit.remove(10000);
-//				}
-//				else if(e.getItem() == cb[2]) {
-//					money_unit.remove(1000);
-//				}
-//				else if(e.getItem() == cb[3]) {
-//					money_unit.remove(5000);
-//				}
-//				else if(e.getItem() == cb[4]) {
-//					money_unit.remove(500);
-//				}
-//				else if(e.getItem() == cb[5]) {
-//					money_unit.remove(100);
-//				}
-//				else if(e.getItem() == cb[6]) {
-//					money_unit.remove(10);
-//				}
-//				else {
-//					money_unit.remove(1);
-//				}
+				for(int i=0; i<money_unit.length; i++) {
+					if(e.getItem() == cb[i])
+					mu[i] = 0;
+				}
+				
 			}
 		}
 		
@@ -142,12 +103,16 @@ public class Prac11_04 extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			JButton b = (JButton)e.getSource();
 			int num = Integer.parseInt(totalMoney.getText());
-			
-			for(int i=0; i<money_unit.length; i++) {
-				if(i == 0 && money_unit[i]!=0) {
+			int n=0;
+			for(int i=0; i<money.length; i++) {
+				if(mu[i]!=0) {
 					money[i].setText(Integer.toString(num/money_unit[i]));
-//					return;
+					
 				}
+				else if(money_unit[i]!=0 ) {
+					money[i].setText(Integer.toString((num%money_unit[i-1])/money_unit[i]) );  
+				}
+				
 				
 //				if(i == 0) { money[0].setText(Integer.toString(num/money_unit[i])); }
 //				else {
